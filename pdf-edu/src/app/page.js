@@ -17,7 +17,7 @@ export default function Home() {
 
         {/* Slider Div */}
         <div className="mt-6">
-          <p className="mb-2">슬라이더 값: {sliderValue}</p>
+          <p className="mb-2">문제 수: {sliderValue}</p>
           <input
             type="range"
             min="5"

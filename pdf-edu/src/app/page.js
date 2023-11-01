@@ -4,6 +4,27 @@ import React, { useState } from 'react';
 
 export default function Home() {
   const [sliderValue, setSliderValue] = useState(5);
+  const [file, setFile] = useState(null);
+
+  function handleFileChange(e) {
+    setFile(e.target.files[0]);
+    console.log(e.target.files[0]); // 추출된 텍스트 출력
+  }
+
+  async function handleStartClick() {
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("pdf", file);
+
+    const response = await fetch("/api/extractFile", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    console.log(data.text); // 추출된 텍스트 출력
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -12,7 +33,7 @@ export default function Home() {
         <p className="mb-4">아래의 버튼을 사용하여 파일을 업로드해주세요.</p>
         <label className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded">
           파일 선택
-          <input type="file" className="hidden" />
+          <input type="file" className="hidden" onChange={handleFileChange} />
         </label>
 
         {/* Slider Div */}
@@ -30,7 +51,7 @@ export default function Home() {
 
         {/* 시작하기 Button */}
         <div className="mt-6">
-          <button className="bg-green-500 text-white px-4 py-2 rounded">
+          <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={handleStartClick}>
             시작하기
           </button>
         </div>
